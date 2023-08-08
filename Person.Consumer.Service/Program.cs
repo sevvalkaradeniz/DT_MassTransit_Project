@@ -9,8 +9,9 @@ using Person.Application.Service;
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
     {
+        services.AddScoped<IPersonService, PersonService>();
+        
 
-       
         services.AddMassTransit(x =>
         {
             x.AddConsumer<PersonAddedCommandConsumer>();

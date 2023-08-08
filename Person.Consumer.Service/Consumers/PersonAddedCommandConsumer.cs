@@ -16,7 +16,13 @@ namespace Person.Consumer.Service.Consumers
 {
     public class PersonAddedCommandConsumer : IConsumer<IPersonAddedCommand>
     {
- 
+        IPersonService _personService;
+
+        public PersonAddedCommandConsumer(IPersonService personService)
+        {
+            _personService = personService;
+        }
+
         public async Task Consume(ConsumeContext<IPersonAddedCommand> context)
         {
             var newPerson = new PersonModel
@@ -29,9 +35,8 @@ namespace Person.Consumer.Service.Consumers
                City=context.Message.City,
             };
 
-            Console.WriteLine(context.Message.Name);
-            //_repository.AddAsync(newPerson);
-            //await _personService.AddPerson(newPerson);
+            Console.WriteLine(context.Message.Age);
+            await _personService.AddPerson(newPerson);
             
            
         }

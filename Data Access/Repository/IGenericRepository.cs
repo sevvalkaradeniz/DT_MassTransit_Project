@@ -23,6 +23,6 @@ namespace Data_Access.Repository
 
         void Delete(T entity);
 
-        
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Data_Access.Repository;
+using Data_Access.Repository.Base;
 using MassTransit;
 using Person.Model;
 using Person.Model.Command;
@@ -10,13 +11,20 @@ namespace Person.Application.Service
     {
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly ISendEndpointProvider _sendEndpointProvider;
-        //private readonly IPersonRepository _personRepository;
+        private readonly IPersonRepository _personRepository;
+
+        public PersonService(IPublishEndpoint publishEndpoint, ISendEndpointProvider sendEndpointProvider, IPersonRepository personRepository)
+        {
+            _publishEndpoint = publishEndpoint;
+            _sendEndpointProvider = sendEndpointProvider;
+            _personRepository = personRepository;
+        }
 
         public PersonService(IPublishEndpoint publishEndpoint, ISendEndpointProvider sendEndpointProvider)
         {
             _publishEndpoint = publishEndpoint;
             _sendEndpointProvider = sendEndpointProvider;
-          
+
         }
 
         public async Task Add(PersonModel person)
@@ -31,22 +39,20 @@ namespace Person.Application.Service
                 City = person.City,
                 Message="Person added succesfully"
             };
-
-          
+            
+            await _personRepository.AddAsync(person);
 
             var sendEndPoint = await _sendEndpointProvider.GetSendEndpoint(new Uri
                    ($"queue:{RabbitMQSettings.PersonAddedCommandSendQueueName}"));
            
              await sendEndPoint.Send<IPersonAddedCommand>(PersonAddedCommand);
             
-           
-            //await _publishEndpoint.Publish(PersonAddedCommand);
         }
 
         public async Task AddPerson(PersonModel person)
         {
             //person will be send to data access layer
-            //await _personRepository.AddAsync(person);
+            await _personRepository.AddAsync(person);
         }
 
         public async Task Delete(PersonModel person)
