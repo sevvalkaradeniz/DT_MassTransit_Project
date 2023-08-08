@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-Person.Consumer.Service-e1f420ae-d393-4741-b5b5-832596031215</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.16" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Data Access\Data Access.csproj" />
+    <ProjectReference Include="..\Person.Application\Person.Application.csproj" />
+    <ProjectReference Include="..\Shared\Person.Model.csproj" />
+  </ItemGroup>
+</Project>
